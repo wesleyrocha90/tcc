@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author Wesley
  */
-public class IndividuoImpl implements Individuo{
+public class IndividuoSimples implements Individuo{
   private ArrayList<Gene> cromossomo;
   private int avaliacao;
   private int tamanhoCromossomo;
@@ -16,7 +16,7 @@ public class IndividuoImpl implements Individuo{
     return this.avaliacao;
   }
   
-  public IndividuoImpl(int tamanhoCromossomo){
+  public IndividuoSimples(int tamanhoCromossomo){
     this.tamanhoCromossomo = tamanhoCromossomo;
     cromossomo = new ArrayList<>(tamanhoCromossomo);
     for (int i = 0; i < tamanhoCromossomo; i++) {
@@ -27,25 +27,11 @@ public class IndividuoImpl implements Individuo{
   
   @Override
   public void avaliaIndividuo(){
-    int nCima, nEsquerda, nBaixo, nDireita;
-    nCima = nEsquerda = nBaixo = nDireita = 0;
-    for (Gene gene : cromossomo) {
-      switch(gene.toString()){
-        case "CIMA":
-          nCima++;
-          break;
-        case "ESQUERDA":
-          nEsquerda++;
-          break;
-        case "BAIXO":
-          nBaixo++;
-          break;
-        case "DIREITA":
-          nDireita++;
-          break;
-      }
-    }
-    this.avaliacao = ( nCima * 4 + nEsquerda * 3 + nBaixo * 2 + nDireita * 1 );
+    // coisa pra levar em conta na hora de avaliar o individuo
+    // 1 - quantas vezes ele executa um movimento possivel - ganha nota positiva
+    // 2 - quantas vezes ele se movimenta pra uma posicao impossivel de chegar - ganha nota negativa
+    // 3 - quanto mais posicoes absolutas ele se distancia da posicao inicial - ganha nota positiva
+    // 4 - quanto mais posicoes absolutas ele se aproxima da posicao final - ganha nota positiva
   }
   
   @Override
@@ -57,5 +43,10 @@ public class IndividuoImpl implements Individuo{
     }
     s.append("]");
     return s.toString();
+  }
+  
+  @Override
+  public ArrayList<Gene> getCromossomos() {
+    return this.cromossomo;
   }
 }

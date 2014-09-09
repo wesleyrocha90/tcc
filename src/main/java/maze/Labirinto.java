@@ -1,5 +1,6 @@
 package maze;
 
+import algoritmo.Gene;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -10,7 +11,6 @@ import java.util.Random;
  */
 public class Labirinto {
 
-  private final Double taxaVerdade = 0.25;
   private int tamanhoHorizontal;
   private int tamanhoVertical;
   private boolean inicioFimNasBordas;
@@ -37,7 +37,7 @@ public class Labirinto {
     for (int i = 0; i < this.tamanhoVertical; i++) {
       linhaMatriz = new ArrayList<>();
       for (int j = 0; j < this.tamanhoHorizontal; j++) {
-        linhaMatriz.add(new Celula("0", i, j, true, true, true, true));
+        linhaMatriz.add(new Celula("X", i, j, true, true, true, true));
       }
       this.matriz.add(linhaMatriz);
     }
@@ -50,7 +50,7 @@ public class Labirinto {
     ArrayList<Ligacao> listaLigacoes = new ArrayList<>();
     
     Celula celula = this.getCelulaEm(0, 0);
-    celula.setRotulo("1");
+    celula.setRotulo("0");
     listaLigacoes.addAll(this.getLigacoesCelula(celula));
     
     while( !listaLigacoes.isEmpty() ){
@@ -59,8 +59,8 @@ public class Labirinto {
       
       Celula celulaDestino = ligacao.getCelulaDestino();
       
-      if( !"1".equals(celulaDestino.getRotulo()) ){
-        celulaDestino.setRotulo("1");
+      if( !"0".equals(celulaDestino.getRotulo()) ){
+        celulaDestino.setRotulo("0");
         ligacao.setPassagem();
         listaLigacoes.addAll(this.getLigacoesCelula(celulaDestino));
       }
@@ -91,8 +91,8 @@ public class Labirinto {
         fimColuna = Math.abs(random.nextInt()) % this.tamanhoHorizontal;
       }while(fimLinha == inicioLinha && fimColuna == inicioColuna);
     }
-    this.getCelulaEm(inicioLinha, inicioColuna).setRotulo("O");
-    this.getCelulaEm(fimLinha, fimColuna).setRotulo("X");
+    this.getCelulaEm(inicioLinha, inicioColuna).setRotulo("-1");
+    this.getCelulaEm(fimLinha, fimColuna).setRotulo("1");
   }
   
   private ArrayList<Ligacao> getLigacoesCelula(Celula celula){
@@ -147,7 +147,7 @@ public class Labirinto {
     }
   }
 
-  private Celula getCelulaEm(int linha, int coluna) {
+  public Celula getCelulaEm(int linha, int coluna) {
     return this.matriz.get(linha).get(coluna);
   }
 
@@ -158,128 +158,11 @@ public class Labirinto {
   public int getTamanhoVertical() {
     return tamanhoVertical;
   }
-
-  @Override
-  public String toString() {
-    StringBuilder retorno = new StringBuilder();
-    for (int i = 0; i < this.tamanhoHorizontal; i++) {
-      retorno.append(" _");
-    }
-    for (int i = 0; i < this.tamanhoVertical; i++) {
-      retorno.append("\n");
-      for (int j = 0; j < this.tamanhoHorizontal; j++) {
-        Celula celula = this.getCelulaEm(i, j);
-        if(celula.hasParedeEsquerda()){
-          retorno.append("|");
-        }else{
-          retorno.append(" ");
-        }
-        if (celula.hasParedeEmbaixo()) {
-          retorno.append("_");
-        }else{
-          retorno.append(" ");
-        }
-        
-        if(j == this.tamanhoHorizontal - 1){
-          retorno.append("|");
-        }
-      }
-    }
-    return retorno.toString();
-  }
   
-  public String toString2() {
-    String vazado = "\u2591";
-    String solido = "\u2593";
-    
-    StringBuilder retorno = new StringBuilder();
-    for (int i = 0; i < this.tamanhoVertical; i++) {
-      for (int j = 0; j < this.tamanhoHorizontal; j++) {
-        Celula celula = this.getCelulaEm(i, j);
-        if(celula.hasParedeEmcima()){
-          retorno.append(solido).append(solido).append(solido);
-        }else{
-          retorno.append(solido).append(vazado).append(solido);
-        }
-      }
-      retorno.append("\n");
-      for (int j = 0; j < this.tamanhoHorizontal; j++) {
-        Celula celula = this.getCelulaEm(i, j);
-        if(celula.hasParedeEsquerda()){
-          retorno.append(solido);
-        }else{
-          retorno.append(vazado);
-        }
-        
-        if("O".equals(celula.getRotulo()) || "X".equals(celula.getRotulo())){
-          retorno.append(celula.getRotulo());
-        }else{
-          retorno.append(vazado);
-        }
-        
-        if (celula.hasParedeDireita()) {
-          retorno.append(solido);
-        }else{
-          retorno.append(vazado);
-        }
-      }
-      retorno.append("\n");
-      for (int j = 0; j < this.tamanhoHorizontal; j++) {
-        Celula celula = this.getCelulaEm(i, j);
-        if(celula.hasParedeEmbaixo()){
-          retorno.append(solido).append(solido).append(solido);
-        }else{
-          retorno.append(solido).append(vazado).append(solido);
-        }
-      }
-      retorno.append("\n");
+  public void aplicaCaminho(Caminho caminho){
+    ArrayList<Gene> direcoes = caminho.getDirecoes();
+    for (Gene gene : direcoes) {
+      System.out.print(gene.toString() + " - ");
     }
-    return retorno.toString();
   }
-  
-  public String toString3() {
-    String vazado = "\u2591";
-    String solido = "\u2593";
-
-    StringBuilder retorno = new StringBuilder();
-    
-    for (int i = 0; i < this.tamanhoHorizontal; i++) {
-      retorno.append(solido).append(solido);
-    }
-    retorno.append(solido);
-    for (int i = 0; i < this.tamanhoVertical; i++) {
-      retorno.append("\n");
-      for (int j = 0; j < this.tamanhoHorizontal; j++) {
-        Celula celula = this.getCelulaEm(i, j);
-        if (celula.hasParedeEsquerda()) {
-          retorno.append(solido);
-        } else {
-          retorno.append(vazado);
-        }
-        
-        if ("O".equals(celula.getRotulo()) || "X".equals(celula.getRotulo())) {
-          retorno.append(celula.getRotulo());
-        } else {
-          retorno.append(vazado);
-        }
-        
-        if (j == this.tamanhoHorizontal - 1) {
-          retorno.append(solido);
-        }
-      }
-      retorno.append("\n");
-      for (int j = 0; j < this.tamanhoHorizontal; j++) {
-        Celula celula = this.getCelulaEm(i, j);
-        if (celula.hasParedeEmbaixo()) {
-          retorno.append(solido).append(solido);
-        } else {
-          retorno.append(solido).append(vazado);
-        }
-      }
-      retorno.append(solido);
-    }
-    
-    return retorno.toString();
-  }
-
 }

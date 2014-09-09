@@ -1,6 +1,8 @@
 package main;
 
-import algoritmo.PopulacaoImpl;
+import algoritmo.IndividuoSimples;
+import maze.Caminho;
+import maze.Labirinto;
 import org.junit.Test;
 
 /**
@@ -12,9 +14,9 @@ public class MainTest {
   @Test
   public void criacaoDeUmaPopulacao() {
     
-    PopulacaoImpl p = new PopulacaoImpl(10, 10);
-    p.algoritmo();    
-    System.out.println(p.toString());
+    Caminho caminho = new Caminho(new IndividuoSimples(10));
+    Labirinto labirinto = new Labirinto(5, 5);
+    labirinto.aplicaCaminho(caminho);
     
   }
 }

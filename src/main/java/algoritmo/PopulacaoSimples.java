@@ -1,30 +1,31 @@
 package algoritmo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Wesley
  */
-public class PopulacaoImpl implements Populacao {
+public class PopulacaoSimples implements Populacao {
   private int contadorGeracao;
-  private int tamanhoCromossomo;
+  private int tamanhoIndividuo;
   private int tamanhoPopulacao;
   private ArrayList<Individuo> populacao;
   
   private int melhorAvaliacao;
   private final int melhorAvaliacaoPossivel = 60;
   
-  public PopulacaoImpl(int tamanhoPopulacao, int tamanhoCromossomo){
+  public PopulacaoSimples(int tamanhoPopulacao, int tamanhoIndividuo){
     this.contadorGeracao = 0;
-    this.tamanhoCromossomo = tamanhoCromossomo;
+    this.tamanhoIndividuo = tamanhoIndividuo;
     this.tamanhoPopulacao = tamanhoPopulacao;
   }
   
-  private void inicializaPopulacao(){
+  public void inicializaPopulacao(){
     populacao = new ArrayList<>();
     for (int i = 0; i < tamanhoPopulacao; i++) {
-      populacao.add(new IndividuoImpl(tamanhoCromossomo));
+      populacao.add(new IndividuoSimples(tamanhoIndividuo));
     }
   }
   
@@ -69,5 +70,10 @@ public class PopulacaoImpl implements Populacao {
       s.append(populacao.get(i).getAvaliacao()).append("\t").append(populacao.get(i)).append("\n");
     }
     return s.toString();
+  }
+
+  @Override
+  public List<Individuo> getIndividuos() {
+    return populacao;
   }
 }
