@@ -7,7 +7,10 @@ import java.util.ArrayList;
  * @author Wesley
  */
 public interface Individuo {
-  public int getAvaliacao();
-  public void avaliaIndividuo();
+
+  public double getAvaliacao();
+
+  public void setAvalicao(double i);
+
   public ArrayList<Gene> getCromossomos();
 }

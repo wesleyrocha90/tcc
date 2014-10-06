@@ -9,10 +9,9 @@ import view.Principal;
 public class Main {
 
   public static void main(String[] args) {
-    
+
     Principal frame = new Principal();
     frame.setVisible(true);
-    
+
   }
-  
 }

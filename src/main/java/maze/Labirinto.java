@@ -15,6 +15,9 @@ public class Labirinto {
   private int tamanhoVertical;
   private boolean inicioFimNasBordas;
   private ArrayList<ArrayList<Celula>> matriz;
+  private Celula celulaInicio;
+  private Celula celulaFim;
+  private Celula celulaFimCaminho;
 
   public Labirinto(int tamanhoHorizontal, int tamanhoVertical) {
     this.tamanhoHorizontal = tamanhoHorizontal;
@@ -22,12 +25,12 @@ public class Labirinto {
 
     this.gerarLabirinto();
   }
-  
+
   public Labirinto(int tamanhoHorizontal, int tamanhoVertical, boolean inicioFimNasBordas) {
     this.tamanhoHorizontal = tamanhoHorizontal;
     this.tamanhoVertical = tamanhoVertical;
     this.inicioFimNasBordas = inicioFimNasBordas;
-    
+
     this.gerarLabirinto();
   }
 
@@ -41,75 +44,76 @@ public class Labirinto {
       }
       this.matriz.add(linhaMatriz);
     }
-    
+
     this.gerarCaminho();
     this.setInicioEFim();
   }
-  
-  private void gerarCaminho(){
+
+  private void gerarCaminho() {
     ArrayList<Ligacao> listaLigacoes = new ArrayList<>();
-    
+
     Celula celula = this.getCelulaEm(0, 0);
     celula.setRotulo("0");
     listaLigacoes.addAll(this.getLigacoesCelula(celula));
-    
-    while( !listaLigacoes.isEmpty() ){
+
+    while (!listaLigacoes.isEmpty()) {
       Collections.shuffle(listaLigacoes);
       Ligacao ligacao = listaLigacoes.remove(0);
-      
+
       Celula celulaDestino = ligacao.getCelulaDestino();
-      
-      if( !"0".equals(celulaDestino.getRotulo()) ){
+
+      if (!"0".equals(celulaDestino.getRotulo())) {
         celulaDestino.setRotulo("0");
         ligacao.setPassagem();
         listaLigacoes.addAll(this.getLigacoesCelula(celulaDestino));
       }
-      
     }
   }
-  
-  private void setInicioEFim(){
+
+  private void setInicioEFim() {
     Random random = new Random();
     int inicioLinha;
     int inicioColuna;
     int fimLinha;
     int fimColuna;
-    if(inicioFimNasBordas){
-      do{
+    if (inicioFimNasBordas) {
+      do {
         inicioLinha = Math.abs(random.nextInt()) % this.tamanhoVertical;
         inicioColuna = Math.abs(random.nextInt()) % this.tamanhoHorizontal;
-      }while(inicioLinha != 0 && inicioColuna != 0);
-      do{
+      } while (inicioLinha != 0 && inicioColuna != 0);
+      do {
         fimLinha = Math.abs(random.nextInt()) % this.tamanhoVertical;
         fimColuna = Math.abs(random.nextInt()) % this.tamanhoHorizontal;
-      }while((fimLinha != 0 && fimColuna != 0) || (fimLinha == inicioLinha && fimColuna == inicioColuna));
-    }else{
+      } while ((fimLinha != 0 && fimColuna != 0) || (fimLinha == inicioLinha && fimColuna == inicioColuna));
+    } else {
       inicioLinha = Math.abs(random.nextInt()) % this.tamanhoVertical;
       inicioColuna = Math.abs(random.nextInt()) % this.tamanhoHorizontal;
-      do{
+      do {
         fimLinha = Math.abs(random.nextInt()) % this.tamanhoVertical;
         fimColuna = Math.abs(random.nextInt()) % this.tamanhoHorizontal;
-      }while(fimLinha == inicioLinha && fimColuna == inicioColuna);
+      } while (fimLinha == inicioLinha && fimColuna == inicioColuna);
     }
-    this.getCelulaEm(inicioLinha, inicioColuna).setRotulo("-1");
-    this.getCelulaEm(fimLinha, fimColuna).setRotulo("1");
+    celulaInicio = this.getCelulaEm(inicioLinha, inicioColuna);
+    celulaInicio.setRotulo("-1");
+    celulaFim = this.getCelulaEm(fimLinha, fimColuna);
+    celulaFim.setRotulo("1");
   }
-  
-  private ArrayList<Ligacao> getLigacoesCelula(Celula celula){
+
+  private ArrayList<Ligacao> getLigacoesCelula(Celula celula) {
     ArrayList<Ligacao> retorno = new ArrayList<>();
     Celula celulaAux;
     int linha = celula.getPosicaoLinha();
     int coluna = celula.getPosicaoColuna();
-    if( (celulaAux = this.getCelulaEmcimaDe(linha, coluna)) != null){
+    if ((celulaAux = this.getCelulaEmcimaDe(linha, coluna)) != null) {
       retorno.add(new Ligacao(celula, celulaAux, Ligacao.Direcao.Cima));
     }
-    if( (celulaAux = this.getCelulaEsquerdaDe(linha, coluna)) != null){
+    if ((celulaAux = this.getCelulaEsquerdaDe(linha, coluna)) != null) {
       retorno.add(new Ligacao(celula, celulaAux, Ligacao.Direcao.Esquerda));
     }
-    if( (celulaAux = this.getCelulaEmbaixoDe(linha, coluna)) != null){
+    if ((celulaAux = this.getCelulaEmbaixoDe(linha, coluna)) != null) {
       retorno.add(new Ligacao(celula, celulaAux, Ligacao.Direcao.Baixo));
     }
-    if( (celulaAux = this.getCelulaDireitaDe(linha, coluna)) != null){
+    if ((celulaAux = this.getCelulaDireitaDe(linha, coluna)) != null) {
       retorno.add(new Ligacao(celula, celulaAux, Ligacao.Direcao.Direita));
     }
     return retorno;
@@ -151,6 +155,27 @@ public class Labirinto {
     return this.matriz.get(linha).get(coluna);
   }
 
+  public Celula getCelulaInicio() {
+    return celulaInicio;
+  }
+
+  public Celula getCelulaFim() {
+    return celulaFim;
+  }
+
+  public Celula getCelulaFimCaminho() {
+    return celulaFimCaminho;
+  }
+
+  public double getDistancia(Celula inicio, Celula fim) {
+    int inicioX = inicio.getPosicaoLinha();
+    int inicioY = inicio.getPosicaoColuna();
+    int fimX = fim.getPosicaoLinha();
+    int fimY = fim.getPosicaoColuna();
+    double distancia = Math.sqrt(Math.pow((fimX - inicioX), 2) + Math.pow((fimY - inicioY), 2));
+    return distancia;
+  }
+
   public int getTamanhoHorizontal() {
     return tamanhoHorizontal;
   }
@@ -158,11 +183,59 @@ public class Labirinto {
   public int getTamanhoVertical() {
     return tamanhoVertical;
   }
-  
-  public void aplicaCaminho(Caminho caminho){
+
+  public void removeCaminho() {
+    for (ArrayList<Celula> arrayList : matriz) {
+      for (Celula celula : arrayList) {
+        if (celula.getRotulo().equals("2") || celula.getRotulo().equals("4")) {
+          celula.setRotulo("0");
+        }
+      }
+    }
+  }
+
+  public void aplicaCaminho(Caminho caminho) {
+    Thread thread = new Thread();
     ArrayList<Gene> direcoes = caminho.getDirecoes();
+    boolean isInicio = true;
+    Celula celulaAtual = celulaInicio;
+    Celula celulaNova;
     for (Gene gene : direcoes) {
-      System.out.print(gene.toString() + " - ");
+      celulaNova = null;
+      switch (gene.getGene()) {
+        case "CIMA":
+          if (!celulaAtual.hasParedeEmcima()) {
+            celulaNova = getCelulaEmcimaDe(celulaAtual.getPosicaoLinha(), celulaAtual.getPosicaoColuna());
+          }
+          break;
+        case "DIREITA":
+          if (!celulaAtual.hasParedeDireita()) {
+            celulaNova = getCelulaDireitaDe(celulaAtual.getPosicaoLinha(), celulaAtual.getPosicaoColuna());
+          }
+          break;
+        case "BAIXO":
+          if (!celulaAtual.hasParedeEmbaixo()) {
+            celulaNova = getCelulaEmbaixoDe(celulaAtual.getPosicaoLinha(), celulaAtual.getPosicaoColuna());
+          }
+          break;
+        case "ESQUERDA":
+          if (!celulaAtual.hasParedeEsquerda()) {
+            celulaNova = getCelulaEsquerdaDe(celulaAtual.getPosicaoLinha(), celulaAtual.getPosicaoColuna());
+          }
+          break;
+      }
+      if (celulaNova != null) {
+        if (!isInicio) {
+          celulaAtual.setRotulo("2");
+        } else {
+          isInicio = false;
+        }
+        celulaAtual = celulaNova;
+      }
+    }
+    celulaFimCaminho = celulaAtual;
+    if (!celulaFimCaminho.equals(celulaInicio)) {
+      celulaFimCaminho.setRotulo("4");
     }
   }
 }

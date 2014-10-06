@@ -5,9 +5,11 @@ package maze;
  * @author Wesley
  */
 public class Ligacao {
-  
-  enum Direcao { Cima, Esquerda, Baixo, Direita };
-  
+
+  enum Direcao {
+
+    Cima, Esquerda, Baixo, Direita
+  };
   private Celula celulaOrigem;
   private Celula celulaDestino;
   private Direcao direcao;
@@ -21,9 +23,9 @@ public class Ligacao {
   public Celula getCelulaDestino() {
     return celulaDestino;
   }
-  
-  public void setPassagem(){
-    switch(this.direcao){
+
+  public void setPassagem() {
+    switch (this.direcao) {
       case Cima:
         celulaOrigem.setParedeEmcima(false);
         celulaDestino.setParedeEmbaixo(false);
@@ -42,5 +44,4 @@ public class Ligacao {
         break;
     }
   }
-  
 }

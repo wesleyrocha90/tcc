@@ -1,5 +1,7 @@
 package maze;
 
+import java.util.Objects;
+
 /**
  *
  * @author Wesley
@@ -70,6 +72,37 @@ public class Celula {
 
   public boolean hasParedeDireita() {
     return this.paredeDireita;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final Celula other = (Celula) obj;
+    if (this.posicaoLinha != other.posicaoLinha) {
+      return false;
+    }
+    if (this.posicaoColuna != other.posicaoColuna) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 79 * hash + Objects.hashCode(this.rotulo);
+    hash = 79 * hash + this.posicaoLinha;
+    hash = 79 * hash + this.posicaoColuna;
+    hash = 79 * hash + (this.paredeEmcima ? 1 : 0);
+    hash = 79 * hash + (this.paredeEsquerda ? 1 : 0);
+    hash = 79 * hash + (this.paredeEmbaixo ? 1 : 0);
+    hash = 79 * hash + (this.paredeDireita ? 1 : 0);
+    return hash;
   }
 
   @Override
