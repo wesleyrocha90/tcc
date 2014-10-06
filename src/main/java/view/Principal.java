@@ -70,6 +70,7 @@ public class Principal extends JRibbonFrame {
     this.setDefaultCloseOperation(JRibbonFrame.EXIT_ON_CLOSE);
     this.setExtendedState(JRibbonFrame.MAXIMIZED_BOTH);
     this.setMinimumSize(new Dimension(700, 700));
+    this.setTitle("MAZE RUNNER");
 
     this.getRibbon().setApplicationMenu(new RibbonApplicationMenu());
     this.setApplicationIcon(getResizableIconFromResource("maze-cube.png"));
@@ -151,10 +152,10 @@ public class Principal extends JRibbonFrame {
     // inicio do codigo pra criar todas as bandas e seus componentes
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // criando a banda
-    JRibbonBand bandAlgoritmo = new JRibbonBand("Algoritmo", getResizableIconFromResource("maze_128.png"));
+    JRibbonBand bandAlgoritmo = new JRibbonBand("Algoritmo", getResizableIconFromResource("algorithm.png"));
 
     // criando os botoes de comando
-    JCommandButton buttonGerarPopulacao = new JCommandButton("Executar Algoritmo", getResizableIconFromResource("maze_128.png"));
+    JCommandButton buttonGerarPopulacao = new JCommandButton("Executar Algoritmo", getResizableIconFromResource("algorithm.png"));
     buttonGerarPopulacao.addActionListener(new ExecutarAlgoritmo());
 
     textTamanhoPopulacao = new JTextField("10", 5);

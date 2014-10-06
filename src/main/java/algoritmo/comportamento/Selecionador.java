@@ -1,5 +1,6 @@
-package algoritmo;
+package algoritmo.comportamento;
 
+import algoritmo.Individuo;
 import java.util.List;
 
 /**
@@ -10,9 +11,9 @@ import java.util.List;
 public interface Selecionador {
   /**
    * Método responsável por implementar o algoritmo de seleção dos melhores indivíduos
-   * @param populacao A população de indivíduos de onde os melhores serão selecionados
+   * @param populacao Uma lista com os indivíduos de onde os melhores serão selecionados
    * @param quantidadeEleitos A quantidade de indivíduos que devem ser selecionados
-   * @return Uma coleção com os indivíduos que foram selecionados pelo método
+   * @return Uma lista com os indivíduos que foram selecionados pelo método
    */
   public List<? extends Individuo> selecionar(List<? extends Individuo> populacao, int quantidadeEleitos);
 }

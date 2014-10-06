@@ -1,4 +1,7 @@
-package algoritmo;
+package algoritmo.comportamento;
+
+import algoritmo.GeneDirecao;
+import algoritmo.Individuo;
 
 /**
  *

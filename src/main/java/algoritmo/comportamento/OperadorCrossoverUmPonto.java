@@ -1,12 +1,14 @@
-package algoritmo;
+package algoritmo.comportamento;
 
+import algoritmo.Individuo;
+import algoritmo.IndividuoSimples;
 import java.util.Random;
 
 /**
  *
  * @author Wesley
  */
-public class OperadorCrossoverUmPonto implements OperadorGenetico{
+public class OperadorCrossoverUmPonto implements OperadorCrossover{
 
   @Override
   public Individuo aplicarOperador(Individuo individuo1, Individuo individuo2) {

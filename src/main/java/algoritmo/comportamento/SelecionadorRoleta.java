@@ -1,5 +1,6 @@
-package algoritmo;
+package algoritmo.comportamento;
 
+import algoritmo.Individuo;
 import java.util.List;
 
 public class SelecionadorRoleta implements Selecionador {

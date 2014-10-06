@@ -22,6 +22,11 @@ public class IndividuoSimples implements Individuo {
     this.avaliacao = avaliacao;
   }
   
+  /**
+   * Cria um individuo simples com o tamanho especificado
+   * @param tamanhoCromossomo a quantidade de genes que o indivíduo deverá ter
+   * @param inicializa se o indivíduo deve ser inicializado com seus genes gerados aleatoriamente
+   */
   public IndividuoSimples(int tamanhoCromossomo, boolean inicializa) {
     this.tamanhoCromossomo = tamanhoCromossomo;
     cromossomo = new ArrayList<>(tamanhoCromossomo);
